@@ -1,0 +1,84 @@
+{
+  "name": "DonationLink",
+  "type": "object",
+  "properties": {
+    "platform": {
+      "type": "string",
+      "enum": [
+        "venmo",
+        "gofundme",
+        "paypal",
+        "cashapp",
+        "buymeacoffee",
+        "ko-fi",
+        "patreon",
+        "other"
+      ],
+      "default": "other"
+    },
+    "url": {
+      "type": "string",
+      "description": "External donation link"
+    },
+    "label": {
+      "type": "string",
+      "description": "Display name for the link"
+    },
+    "message": {
+      "type": "string",
+      "description": "Optional thank-you or call-to-action message"
+    },
+    "creator_id": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "platform",
+    "url"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "user"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
